@@ -1,6 +1,7 @@
 import exceptions.NotAvaliableException;
 import exceptions.TooManyThingsException;
 import helpers.DateHelper;
+import helpers.Runner;
 import objects.Item;
 import objects.Vehicle;
 import person.Person;
@@ -51,40 +52,7 @@ public class Main {
         people.get(0).addItem(parkings.get(0), box);
         people.get(1).addItem(parkings.get(1), boat1);
 
-        run(people);
-    }
-
-    public static void run(List<Person> people) {
-        Scanner in = new Scanner(System.in);
-
-
-        StringBuilder greeting = new StringBuilder("*********************************\n");
-        greeting.append("* Welcome to the EstateManager! *\n");
-        greeting.append("*********************************\n");
-        greeting.append("Please, type an ID of person you are: \n");
-        greeting.append("ID | ").append("Name and Surname\n");
-        greeting.append("----------------------\n");
-
-        for (Person p : people){
-            greeting.append(p.id).append(": ").append(p.name).append(" ").append(p.surname).append("\n");
-        }
-
-        String currentPerson = in.nextLine();
-
-        String menu = "Please, choose one of the options below: \n";
-        menu += "1. Show your data \n";
-        menu += "2. Show free places to rent \n";
-        menu += "3. Save all data to the file \n";
-        menu += "4. Select another person \n";
-        menu += "0. End program \n";
-
-
-        boolean end = false;
-        while (!end) {
-            System.out.println(menu);
-        }
-
-
-        System.out.println(greeting.toString());
+        Estate estate = new Estate(apartments, parkings);
+        Runner runner = new Runner(people, estate);
     }
 }

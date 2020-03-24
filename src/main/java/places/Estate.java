@@ -4,17 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Estate {
-    private List<Place> places = new ArrayList<>();
+    public List<Apartment> apartments = new ArrayList<>();
+    public List<ParkingSpot> parkings = new ArrayList<>();
 
-    public Estate(List<Place> places) {
-        this.places = places;
+    public Estate(List<Apartment> apartments, List<ParkingSpot> parkings) {
+        this.apartments = apartments;
+        this.parkings = parkings;
     }
-
-    public Place find(String id) {
-        for (Place p : this.places) {
-            if (p.id.equals(id))
-                return p;
-        }
-        return null;
-    }
+//
+//    public Place find(String id) {
+//        for (Place p : this.places) {
+//            if (p.id.equals(id))
+//                return p;
+//        }
+//        return null;
+//    }
 }

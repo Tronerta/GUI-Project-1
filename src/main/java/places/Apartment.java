@@ -13,5 +13,15 @@ public class Apartment extends Place {
         super.id = "A" + ++index;
     }
 
-
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder(super.toString());
+        if (!habitants.isEmpty()){
+            result.append("Habitants: ");
+            for (Person p : habitants){
+                result.append("  ").append(p.toSmallString()).append("\n");
+            }
+        }
+        return result.toString();
+    }
 }

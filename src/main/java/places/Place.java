@@ -28,4 +28,15 @@ public class Place extends Object {
         this.najemca = person;
     }
 
+    public String toString() {
+        String result =  "Place ID: " + id + "\n" +
+                "Volume: " + volume + "\n";
+        if (najemca != null) {
+            result += "Najemca: " + najemca.toSmallString() + "\n" +
+                    "Rent start date: " + startDate + "\n" +
+                    "Rend end date: " + endDate + "\n";
+        }
+        return result;
+    }
+
 }

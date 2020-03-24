@@ -46,6 +46,10 @@ public class Person {
                 " - Places: " + places + "\n";
     }
 
+    public String toSmallString(){
+        return id + " " + name + " " + surname;
+    }
+
     // Rent a place
     public void rent(Place p) throws NotAvaliableException, TooManyThingsException {
         if ((p instanceof ParkingSpot) && !this.hasApartment()) {
