@@ -7,9 +7,10 @@ import java.time.LocalDate;
 
 public class Place extends Object {
     Person najemca;
-    public String id;
     public LocalDate startDate;
     public LocalDate endDate;
+    public String id;
+    private static int index = 0;
 
     public Place(double volume) {
         super(volume);

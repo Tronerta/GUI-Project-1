@@ -3,6 +3,7 @@ package objects;
 public class Item extends Object {
     public String title;
     public boolean placed = false;
+    public String id;
 
     public Item(double volume, String title) {
         super(volume);

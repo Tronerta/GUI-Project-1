@@ -3,7 +3,7 @@ package objects;
 public class Object {
     public double volume;
 
-    public Object(double volume) {
+    public Object (double volume) {
         this.volume = volume;
     }
 

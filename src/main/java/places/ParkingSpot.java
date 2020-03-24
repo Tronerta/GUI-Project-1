@@ -10,7 +10,7 @@ public class ParkingSpot extends Place {
 
     public ParkingSpot(double volume) {
         super(volume);
-        super.id = "MP" + ++index;
+        super.id = "PS" + ++index;
     }
 
     public double getFreeVolume(){
