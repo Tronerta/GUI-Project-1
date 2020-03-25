@@ -21,4 +21,10 @@ public class Vehicle extends Item {
         this.type = type;
         super.id = "V-" + ++index;
     }
+
+    public String toString(){
+        return super.toString() + " - Vehicle type: " + type + "\n" +
+                " - Engine capacity: " + engineCapacity + "\n" +
+                " - Engine type: " + engineType + "\n";
+    }
 }

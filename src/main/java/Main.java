@@ -35,8 +35,6 @@ public class Main {
             parkings.add(new ParkingSpot(Math.random() * (300 - 10 + 1) + 10));
         }
 
-//        Estate estate1 = new Estate(places);
-
         for (int i = 0; i < 3; i++) {
             people.get(i).rent(apartments.get(i));
         }
@@ -44,15 +42,15 @@ public class Main {
         people.get(0).rent(parkings.get(0));
         people.get(1).rent(parkings.get(1));
 
-        Item box = new Item(15.29, "Box");
+        Item box = new Item(5.29, "Box");
         Item ball = new Item(1, 2.1, 3.2, "Ball");
-        Boat boat1 = new Boat(67.13, "Galaxy", 180.32, "FastEngine V3.0", "Large Boat", 0);
-        Motorcycle bike1 = new Motorcycle(89.11, "Golf 3", 89.50, "Turbo Diesel V2", "Hachback", 9.3);
+        Boat boat1 = new Boat(25.13, "Galaxy", 180.32, "FastEngine V3.0", "Large Boat", 0);
+        Motorcycle bike1 = new Motorcycle(32.11, "Golf 3", 89.50, "Turbo Diesel V2", "Hachback", 9.3);
 
         people.get(0).addItem(parkings.get(0), box);
         people.get(1).addItem(parkings.get(1), boat1);
 
         Estate estate = new Estate(apartments, parkings);
-        Runner runner = new Runner(people, estate);
+        new Runner(people, estate);
     }
 }

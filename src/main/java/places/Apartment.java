@@ -10,7 +10,7 @@ public class Apartment extends Place {
 
     public Apartment(double volume) {
         super(volume);
-        super.id = "A" + ++index;
+        super.id = "A-" + ++index;
     }
 
     @Override

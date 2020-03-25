@@ -10,7 +10,7 @@ public class ParkingSpot extends Place {
 
     public ParkingSpot(double volume) {
         super(volume);
-        super.id = "PS" + ++index;
+        super.id = "PS-" + ++index;
     }
 
 
@@ -27,6 +27,7 @@ public class ParkingSpot extends Place {
         StringBuilder result = new StringBuilder(super.toString());
         if (!items.isEmpty()){
             for (Item i : this.items){
+                result.append("Placed items: \n");
                 result.append(i.toString()).append("\n");
             }
         }

@@ -6,7 +6,7 @@ import person.Person;
 import java.time.LocalDate;
 
 public class Place extends Object {
-    Person najemca;
+    Person tenant;
     public LocalDate startDate;
     public LocalDate endDate;
     public String id;
@@ -21,20 +21,20 @@ public class Place extends Object {
     }
 
     public boolean isAvaliable() {
-        return this.najemca == null;
+        return this.tenant == null;
     }
 
-    public void setNajemca(Person person) {
-        this.najemca = person;
+    public void setTenant(Person person) {
+        this.tenant = person;
     }
 
     public String toString() {
-        String result =  "Place ID: " + id + "\n" +
-                "Volume: " + volume + "\n";
-        if (najemca != null) {
-            result += "Najemca: " + najemca.toSmallString() + "\n" +
-                    "Rent start date: " + startDate + "\n" +
-                    "Rend end date: " + endDate + "\n";
+        String result =  " - Place ID: " + id + "\n" +
+                " - Volume: " + volume + "\n";
+        if (tenant != null) {
+            result += " - Tenant: " + tenant.toSmallString() + "\n" +
+                    " - Rent start date: " + startDate + "\n" +
+                    " - Rent end date: " + endDate + "\n";
         }
         return result;
     }

@@ -37,17 +37,23 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Information about " + name + " " + surname + ": \n" +
-                " - ID: " + id + "\n" +
-                " - PESEL: " + PESEL + "\n" +
-                " - Address: " + address + "\n" +
-                " - Birth date: " + birthDate + "\n" +
-                " - Number of Files: " + files.size() + "\n" +
-                " - Places: " + places + "\n";
+        StringBuilder result = new StringBuilder("Information about " + this.toSmallString() + ": \n");
+        result.append(" - ID: ").append(id).append("\n");
+        result.append(" - PESEL: ").append(PESEL).append("\n");
+        result.append(" - Address: ").append(address).append("\n");
+        result.append(" - Birth date: ").append(birthDate).append("\n");
+        result.append(" - Number of Files: ").append(files.size()).append("\n \n");
+        if (!places.isEmpty()){
+            result.append("Rented Places: \n");
+            for (Place p : places){
+                result.append(p.toString()).append("\n");
+            }
+        }
+        return result.toString();
     }
 
     public String toSmallString(){
-        return id + " " + name + " " + surname;
+        return "[" + id + "] " + name + " " + surname;
     }
 
     // Rent a place
@@ -58,7 +64,7 @@ public class Person {
             if (p.isAvaliable()) {
                 if (this.rentingSpaceAvaliable()) {
                     places.add(p);
-                    p.setNajemca(this);
+                    p.setTenant(this);
                     p.startDate = DateHelper.randomDate();
                     p.endDate = p.startDate.plusDays(30);
                 } else {
