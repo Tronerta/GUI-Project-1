@@ -23,8 +23,8 @@ public class Vehicle extends Item {
     }
 
     public String toString(){
-        return super.toString() + " - Vehicle type: " + type + "\n" +
-                " - Engine capacity: " + engineCapacity + "\n" +
-                " - Engine type: " + engineType + "\n";
+        return super.toString() + "  - Vehicle type: " + type + "\n" +
+                "  - Engine capacity: " + engineCapacity + "\n" +
+                "  - Engine type: " + engineType + "\n";
     }
 }

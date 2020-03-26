@@ -2,27 +2,22 @@ package helpers;
 
 import exceptions.NotAvaliableException;
 import exceptions.TooManyThingsException;
+import objects.Item;
 import person.Person;
-import places.Apartment;
 import places.Estate;
 import places.ParkingSpot;
 import places.Place;
 
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
 public class Runner {
-    List<Person> people;
-    List<Apartment> apartments;
-    List<ParkingSpot> parkings;
+    Estate estate;
     Person currentPerson;
     boolean end = false;
 
-    public Runner(List<Person> people, Estate estate) throws NotAvaliableException, TooManyThingsException {
-        this.people = people;
-        this.apartments = estate.apartments;
-        this.parkings = estate.parkings;
+    public Runner(Estate estate) throws NotAvaliableException, TooManyThingsException {
+        this.estate = estate;
         start();
     }
 
@@ -41,19 +36,19 @@ public class Runner {
         greeting.append("ID | ").append("Name and Surname\n");
         greeting.append("----------------------\n");
 
-        for (Person p : people) {
+        for (Person p : estate.people) {
             greeting.append(p.id).append(": ").append(p.name).append(" ").append(p.surname).append("\n");
         }
 
         greeting.append("Please, type an ID of person you are: \n");
         String id = "";
-        while (findPerson(id) == null) {
+        while (estate.findPerson(id) == null) {
             System.out.println(greeting.toString());
             System.out.println("ID: ");
             Scanner in = new Scanner(System.in);
             id = in.nextLine();
         }
-        return findPerson(id);
+        return estate.findPerson(id);
     }
 
     private void runMenu() throws NotAvaliableException, TooManyThingsException {
@@ -62,10 +57,13 @@ public class Runner {
                 System.out.println(currentPerson);
                 break;
             case 2:
-                showFreePlaces();
+                estate.showFreePlaces();
                 break;
             case 3:
                 rentNewPlace();
+                break;
+            case 4:
+                placeItems();
                 break;
             case 7:
                 start();
@@ -102,60 +100,62 @@ public class Runner {
         return result;
     }
 
-    private void showFreePlaces() {
-        System.out.println("Free Apartments: ");
-        for (Apartment a : apartments) {
-            if (a.isAvaliable()) {
-                System.out.println(a);
-            }
-        }
 
-        System.out.println("Free Parking Spots: ");
-        for (ParkingSpot ps : parkings) {
-            if (ps.isAvaliable()) {
-                System.out.println(ps);
-            }
+
+    private void showFreeItems(){
+        System.out.println("Free Items: ");
+        for (Item i : estate.items) {
+            if (!i.placed)
+                System.out.println(i);
         }
     }
 
     private void rentNewPlace() throws NotAvaliableException, TooManyThingsException {
-        showFreePlaces();
-        System.out.println("Please type an ID of place you want to rent");
+        estate.showFreePlaces();
         String id;
         do {
+            System.out.println("Please type an ID of place you want to rent");
             Scanner in = new Scanner(System.in);
             id = in.nextLine();
-        } while (findPlace(id) == null);
+        } while (estate.findPlace(id) == null);
 
         try {
-            currentPerson.rent(findPlace(id));
+            currentPerson.rent(estate.findPlace(id));
         } catch (NotAvaliableException | TooManyThingsException e) {
             System.out.println(e.getMessage());
-            rentNewPlace();
+            runMenu();
         }
-
         System.out.println("Congratulations! You successfully rented new place! ");
-
     }
 
+    private void placeItems() throws NotAvaliableException, TooManyThingsException {
+        showFreeItems();
+        String itemId;
+        do {
+            System.out.println("Type an ID of item you want to place: ");
+            Scanner in = new Scanner(System.in);
+            itemId = in.nextLine();
+        } while (estate.findItem(itemId) == null);
+        Item currentItem = estate.findItem(itemId);
 
-    public Person findPerson(String id) {
-        for (Person p : people) {
-            if (p.id.equals(id))
-                return p;
+        System.out.println("Your Parking Spots: ");
+        for (Place p : currentPerson.places){
+            if (p instanceof ParkingSpot)
+                System.out.println(p);
         }
-        return null;
-    }
-
-    public Place findPlace(String id) {
-        for (Apartment a : apartments) {
-            if (a.id.equals(id))
-                return a;
+        String parkingId;
+        do {
+            System.out.println("Type an ID of Parking Spot where you want to put " + currentItem.title + ": ");
+            Scanner in = new Scanner(System.in);
+            parkingId = in.nextLine();
+        } while (estate.findParkingSpot(parkingId) == null && !currentPerson.places.contains(estate.findParkingSpot(parkingId)));
+        ParkingSpot currentParking = estate.findParkingSpot(parkingId);
+        try {
+            currentPerson.addItem(currentParking, currentItem);
+        } catch (NotAvaliableException | TooManyThingsException e) {
+            System.out.println(e.getMessage());
+            runMenu();
         }
-        for (ParkingSpot ps : parkings) {
-            if (ps.id.equals(id))
-                return ps;
-        }
-        return null;
+        System.out.println("You successfully added " + currentItem.title + " to the " + currentParking.id);
     }
 }

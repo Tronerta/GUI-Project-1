@@ -15,11 +15,13 @@ public class Item extends Object {
     public Item(double a, double b, double c, String title) {
         super(a, b, c);
         this.title = title;
+        this.id = "I-" + ++index;
     }
 
     public String toString(){
-        return " - ID: " + id + "\n" +
-                " - Placed: " + (placed ? "Yes" : "No") + "\n" +
-                " - Title: " + title + "\n";
+        return "  - ID: " + id + "\n" +
+                "  - Placed: " + (placed ? "Yes" : "No") + "\n" +
+                "  - Title: " + title + "\n" +
+                "  - Volume: " + volume + "\n";
     }
 }

@@ -13,8 +13,6 @@ public class ParkingSpot extends Place {
         super.id = "PS-" + ++index;
     }
 
-
-
     public double getFreeVolume(){
         double sum = 0;
         for (Item p : items){
@@ -26,8 +24,8 @@ public class ParkingSpot extends Place {
     public String toString(){
         StringBuilder result = new StringBuilder(super.toString());
         if (!items.isEmpty()){
+            result.append(" * Placed items in ").append(id).append(":\n");
             for (Item i : this.items){
-                result.append("Placed items: \n");
                 result.append(i.toString()).append("\n");
             }
         }

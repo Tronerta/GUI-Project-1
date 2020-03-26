@@ -3,17 +3,14 @@ import exceptions.TooManyThingsException;
 import helpers.DateHelper;
 import helpers.Runner;
 import objects.Item;
-import objects.Vehicle;
 import person.Person;
 import places.Apartment;
 import places.Estate;
 import places.ParkingSpot;
-import places.Place;
 import vehicles.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 
 public class Main {
@@ -24,6 +21,7 @@ public class Main {
         List<Apartment> apartments = new ArrayList<>();
         List<ParkingSpot> parkings = new ArrayList<>();
         List<Person> people = new ArrayList<>();
+        List<Item> items = new ArrayList<>();
 
         for (int i = 0; i < 5; i++) {
             String[] names = {"John", "Tomasz", "Jacek", "Adrian", "Anna"};
@@ -47,10 +45,15 @@ public class Main {
         Boat boat1 = new Boat(25.13, "Galaxy", 180.32, "FastEngine V3.0", "Large Boat", 0);
         Motorcycle bike1 = new Motorcycle(32.11, "Golf 3", 89.50, "Turbo Diesel V2", "Hachback", 9.3);
 
+        items.add(box);
+        items.add(ball);
+        items.add(boat1);
+        items.add(bike1);
+
         people.get(0).addItem(parkings.get(0), box);
         people.get(1).addItem(parkings.get(1), boat1);
 
-        Estate estate = new Estate(apartments, parkings);
-        new Runner(people, estate);
+        Estate estate = new Estate(apartments, parkings, items, people);
+        new Runner(estate);
     }
 }

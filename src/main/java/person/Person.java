@@ -3,7 +3,6 @@ package person;
 import exceptions.*;
 import helpers.DateHelper;
 import objects.Item;
-import objects.Vehicle;
 import places.ParkingSpot;
 import places.Apartment;
 import places.Place;
@@ -21,8 +20,8 @@ public class Person {
     public String address;
     public LocalDate birthDate;
 
-    List<File> files = new ArrayList<>();
-    List<Place> places = new ArrayList<>();
+    public List<File> files = new ArrayList<>();
+    public List<Place> places = new ArrayList<>();
     private static int index = 0;
     public String id;
 
@@ -87,17 +86,6 @@ public class Person {
 
     // Add item to the parking spot
     public void addItem(ParkingSpot parking, Item p) throws NotAvaliableException, TooManyThingsException {
-        if (p.placed){
-            throw new NotAvaliableException("This item is already in another place!");
-        } else if (parking.getFreeVolume() < p.volume ) {
-            throw new TooManyThingsException("Remove some old items to insert a new item");
-        } else {
-            parking.items.add(p);
-            p.placed = true;
-        }
-    }
-
-    public void addItem(ParkingSpot parking, Vehicle p) throws NotAvaliableException, TooManyThingsException {
         if (p.placed){
             throw new NotAvaliableException("This item is already in another place!");
         } else if (parking.getFreeVolume() < p.volume ) {
