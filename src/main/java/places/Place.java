@@ -28,7 +28,8 @@ public class Place extends Object {
     }
 
     public String toString() {
-        String result =  " - Place ID: " + id + "\n" +
+        String result =  "Place ID: " + id + "\n" +
+                " - Type: " + (this instanceof Apartment ? "Apartment" : "Parking Spot") + "\n" +
                 " - Volume: " + volume + "\n";
         if (tenant != null) {
             result += " - Tenant: " + tenant.toSmallString() + "\n" +

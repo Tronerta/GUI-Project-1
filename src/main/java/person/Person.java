@@ -42,16 +42,16 @@ public class Person {
         result.append(" - Address: ").append(address).append("\n");
         result.append(" - Birth date: ").append(birthDate).append("\n");
         result.append(" - Number of Files: ").append(files.size()).append("\n \n");
-        if (!places.isEmpty()){
+        if (!places.isEmpty()) {
             result.append("Rented Places: \n");
-            for (Place p : places){
+            for (Place p : places) {
                 result.append(p.toString()).append("\n");
             }
         }
         return result.toString();
     }
 
-    public String toSmallString(){
+    public String toSmallString() {
         return "[" + id + "] " + name + " " + surname;
     }
 
@@ -60,17 +60,13 @@ public class Person {
         if ((p instanceof ParkingSpot) && !this.hasApartment()) {
             throw new NotAvaliableException("Rent an apartment first!");
         } else {
-            if (p.isAvaliable()) {
-                if (this.rentingSpaceAvaliable()) {
-                    places.add(p);
-                    p.setTenant(this);
-                    p.startDate = DateHelper.randomDate();
-                    p.endDate = p.startDate.plusDays(30);
-                } else {
-                    throw new TooManyThingsException("You have too much rented places");
-                }
+            if (this.rentingSpaceAvaliable()) {
+                places.add(p);
+                p.setTenant(this);
+                p.startDate = DateHelper.randomDate();
+                p.endDate = p.startDate.plusDays(30);
             } else {
-                throw new NotAvaliableException("That apartment is already rented.");
+                throw new TooManyThingsException("You have too much rented places");
             }
         }
     }
@@ -86,9 +82,9 @@ public class Person {
 
     // Add item to the parking spot
     public void addItem(ParkingSpot parking, Item p) throws NotAvaliableException, TooManyThingsException {
-        if (p.placed){
+        if (p.placed) {
             throw new NotAvaliableException("This item is already in another place!");
-        } else if (parking.getFreeVolume() < p.volume ) {
+        } else if (parking.getFreeVolume() < p.volume) {
             throw new TooManyThingsException("Remove some old items to insert a new item");
         } else {
             parking.items.add(p);
@@ -97,7 +93,7 @@ public class Person {
     }
 
     public void removeItem(ParkingSpot mp, Item p) throws NotAvaliableException {
-        if (mp.items.contains(p)){
+        if (mp.items.contains(p)) {
             mp.items.remove(p);
             p.placed = false;
         } else {
@@ -116,5 +112,14 @@ public class Person {
                 return true;
         }
         return false;
+    }
+
+    public List<Place> getParkingSpots(){
+        List<Place> parkings = new ArrayList<>();
+        for (Place p : places) {
+            if (p instanceof ParkingSpot)
+                parkings.add(p);
+        }
+        return parkings;
     }
 }

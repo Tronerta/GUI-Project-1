@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Estate {
-    public List<Apartment> apartments = new ArrayList<>();
-    public List<ParkingSpot> parkings = new ArrayList<>();
-    public List<Item> items = new ArrayList<>();
-    public List<Person> people = new ArrayList<>();
+    public List<Apartment> apartments;
+    public List<ParkingSpot> parkings;
+    public List<Item> items;
+    public List<Person> people;
 
     public Estate(List<Apartment> apartments, List<ParkingSpot> parkings, List<Item> items, List<Person> people) {
         this.apartments = apartments;
@@ -19,55 +19,33 @@ public class Estate {
         this.people = people;
     }
 
-    public Person findPerson(String id) {
-        for (Person p : people) {
-            if (p.id.equals(id))
-                return p;
-        }
-        return null;
+    public List<Place> getFreePlaces(){
+        List<Place> freePlaces = new ArrayList<>(getFreeApartments());
+        freePlaces.addAll(getFreeParkingSpots());
+        return freePlaces;
     }
 
-    public Place findPlace(String id) {
-        for (Apartment a : apartments) {
-            if (a.id.equals(id))
-                return a;
-        }
-        for (ParkingSpot ps: parkings){
-            if (ps.id.equals(id))
-                return ps;
-        }
-        return null;
+    public List<Apartment> getFreeApartments(){
+        List<Apartment> freeApartments = new ArrayList<>();
+        for (Apartment a : apartments)
+            if (a.isAvaliable())
+                freeApartments.add(a);
+        return freeApartments;
     }
 
-    public ParkingSpot findParkingSpot(String id){
-        for (ParkingSpot ps: parkings){
-            if (ps.id.equals(id))
-                return ps;
-        }
-        return null;
+    public List<ParkingSpot> getFreeParkingSpots(){
+        List<ParkingSpot> freeParkingSpots = new ArrayList<>();
+        for (ParkingSpot ps : parkings)
+            if (ps.isAvaliable())
+                freeParkingSpots.add(ps);
+        return freeParkingSpots;
     }
 
-    public Item findItem(String id){
-        for (Item i : items){
-            if (i.id.equals(id))
-                return i;
-        }
-        return null;
-    }
-
-    public void showFreePlaces() {
-        System.out.println("Free Apartments: ");
-        for (Apartment a : apartments) {
-            if (a.isAvaliable()) {
-                System.out.println(a);
-            }
-        }
-
-        System.out.println("Free Parking Spots: ");
-        for (ParkingSpot ps : parkings) {
-            if (ps.isAvaliable()) {
-                System.out.println(ps);
-            }
-        }
+    public List<Item> getFreeItems(){
+        List<Item> items = new ArrayList<>();
+        for (Item i : this.items)
+            if (!i.placed)
+                items.add(i);
+        return items;
     }
 }
