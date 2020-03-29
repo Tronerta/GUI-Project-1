@@ -8,8 +8,12 @@ import places.Estate;
 import places.ParkingSpot;
 import places.Place;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Runner {
@@ -73,6 +77,9 @@ public class Runner {
             case 4:
                 removeItems();
                 break;
+            case 5:
+                estate.saveReport();
+                break;
             case 6:
                 start();
                 break;
@@ -85,7 +92,7 @@ public class Runner {
     private int getMenuChoice(String menu, int listSize) {
         int id = 0;
         do {
-            System.out.println(menu);
+            System.out.println("\n" + menu);
             try {
                 Scanner in = new Scanner(System.in);
                 id = in.nextInt();

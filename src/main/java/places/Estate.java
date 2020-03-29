@@ -7,8 +7,6 @@ import person.Person;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class Estate {
@@ -56,15 +54,49 @@ public class Estate {
 
     public void saveReport() {
         try {
-            FileWriter file = new FileWriter("report_" + DateHelper.todayDate.toString() + ".txt");
+            FileWriter file = new FileWriter("reports/report_" + DateHelper.todayDate.toString() + ".txt");
             file.write("ESTATE REPORT \n");
+            file.write("People: \n");
+            file.write("---------------------\n");
             for (Person p : people) {
                 p.places.sort((lhs, rhs) -> Double.compare(rhs.volume, lhs.volume));
-
+                for (Place parking : p.getParkingSpots()) {
+                    ParkingSpot ps = (ParkingSpot) parking;
+                    ps.items.sort((lhs, rhs) -> Double.compare(rhs.volume, lhs.volume));
+                }
+                file.write(p.toString());
+                file.write("---------------------\n");
             }
-            file.write("Files in Java might be tricky, but it is fun enough!");
+
+            file.write("Free Apartments: \n");
+            file.write("---------------------\n");
+            List<Apartment> freeApartments = getFreeApartments();
+            freeApartments.sort((lhs, rhs) -> Double.compare(rhs.volume, lhs.volume));
+            for (Apartment a : freeApartments) {
+                file.write(a.toString());
+                file.write("---------------------\n");
+            }
+
+            file.write("Free Parking Spots: \n");
+            file.write("---------------------\n");
+            List<ParkingSpot> freeParkingSpots = getFreeParkingSpots();
+            freeParkingSpots.sort((lhs, rhs) -> Double.compare(rhs.volume, lhs.volume));
+            for (ParkingSpot ps : freeParkingSpots) {
+                file.write(ps.toString());
+                file.write("---------------------\n");
+            }
+
+            file.write("Free Items: \n");
+            file.write("---------------------\n");
+            List<Item> freeItems = getFreeItems();
+            freeItems.sort((lhs, rhs) -> Double.compare(rhs.volume, lhs.volume));
+            for (Item ps : freeItems) {
+                file.write(ps.toString());
+                file.write("---------------------\n");
+            }
+
             file.close();
-            System.out.println("Successfully wrote to the file.");
+            System.out.println("Success! Report will be avaliable in a few moments in /reports folder.");
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
