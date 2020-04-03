@@ -1,4 +1,5 @@
 import exceptions.NotAvaliableException;
+import exceptions.ProblematicTenantException;
 import exceptions.TooManyThingsException;
 import helpers.DateHelper;
 import helpers.Runner;
@@ -7,15 +8,16 @@ import person.Person;
 import places.Apartment;
 import places.Estate;
 import places.ParkingSpot;
-import vehicles.*;
+import objects.vehicles.*;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class Main {
 
-    public static void main(String[] args) throws NotAvaliableException, TooManyThingsException {
+    public static void main(String[] args) throws NotAvaliableException, TooManyThingsException, InterruptedException, ProblematicTenantException {
 
         // Initial setup
         List<Apartment> apartments = new ArrayList<>();
@@ -54,6 +56,21 @@ public class Main {
         people.get(1).addItem(parkings.get(1), boat1);
 
         Estate estate = new Estate(apartments, parkings, items, people);
+        deleteAllFiles("letters");
+        deleteAllFiles("reports");
         new Runner(estate);
+    }
+
+    // Delete all files from folder
+    private static void deleteAllFiles(String path){
+        File directory = new File(path);
+        File[] files = directory.listFiles();
+        if (files == null)
+            return;
+        for (File file : files){
+            if (!file.delete()){
+                System.out.println("Failed to delete " + file);
+            }
+        }
     }
 }

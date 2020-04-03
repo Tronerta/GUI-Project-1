@@ -1,4 +1,4 @@
-package vehicles;
+package objects.vehicles;
 
 import objects.Vehicle;
 

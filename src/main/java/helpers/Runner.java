@@ -1,28 +1,25 @@
 package helpers;
 
 import exceptions.NotAvaliableException;
+import exceptions.ProblematicTenantException;
 import exceptions.TooManyThingsException;
 import objects.Item;
 import person.Person;
 import places.Estate;
 import places.ParkingSpot;
 import places.Place;
+import tasks.CheckStatusTask;
+import tasks.DateTask;
 
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class Runner {
     Estate estate;
     Person currentPerson;
-    boolean end = false;
     String menu;
 
-    public Runner(Estate estate) throws NotAvaliableException, TooManyThingsException {
+    public Runner(Estate estate) throws NotAvaliableException, TooManyThingsException, InterruptedException {
         this.estate = estate;
         menu = "Please, choose one of the options below: \n" +
                 "| 1. Show your data \n" +
@@ -33,13 +30,16 @@ public class Runner {
                 "| 6. Save all data to the file \n" +
                 "| 7. Select another person \n" +
                 "| 8. End program \n";
+        // Run constant tasks
+        new Timer().schedule(new DateTask(), 0, 5000);
+        new Timer().schedule(new CheckStatusTask(estate), 0, 10000);
         start();
     }
 
-    private void start() throws NotAvaliableException, TooManyThingsException {
+    private void start() throws NotAvaliableException, TooManyThingsException, InterruptedException {
         this.currentPerson = selectPerson();
         System.out.println("Hello " + currentPerson.toSmallString());
-        while (!end) {
+        while (true) {
             runMenu();
         }
     }
@@ -60,7 +60,7 @@ public class Runner {
         return estate.people.get(getMenuChoice(greeting.toString(), estate.people.size()));
     }
 
-    private void runMenu() throws NotAvaliableException, TooManyThingsException {
+    private void runMenu() throws NotAvaliableException, TooManyThingsException, InterruptedException {
         switch (getMenuChoice(this.menu, 8)) {
             case 0:
                 System.out.println(currentPerson);
@@ -84,8 +84,7 @@ public class Runner {
                 start();
                 break;
             case 7:
-                end = true;
-                break;
+                System.exit(0);
         }
     }
 
@@ -118,73 +117,55 @@ public class Runner {
         }
     }
 
-    private void rentNewPlace() throws NotAvaliableException, TooManyThingsException {
-        Place currentPlace = setPlace(estate.getFreePlaces(), "Free places: \n", "Please choose a place you want to rent: ");
+    private void rentNewPlace() throws NotAvaliableException, TooManyThingsException, InterruptedException {
+        Place currentPlace = setObject(estate.getFreePlaces(), "Free places: \n", "Please choose a place you want to rent: ");
         try {
             currentPerson.rent(currentPlace);
-        } catch (NotAvaliableException | TooManyThingsException e) {
+            System.out.println("Congratulations! You successfully rented new place! ");
+        } catch (NotAvaliableException | TooManyThingsException | ProblematicTenantException e) {
             System.out.println(e.getMessage());
-            runMenu();
         }
-        System.out.println("Congratulations! You successfully rented new place! ");
     }
 
-    private void placeItems() throws NotAvaliableException, TooManyThingsException {
-        Item currentItem = setItem(estate.getFreeItems(), "Free items: \n", "Please choose an item you want to place \n");
-        ParkingSpot currentParking = (ParkingSpot) setPlace(currentPerson.getParkingSpots(), "Your parking spots: \n", "Please choose parking spot where you want to place " + currentItem.title);
+    private void placeItems() throws NotAvaliableException, TooManyThingsException, InterruptedException {
+        Item currentItem = setObject(estate.getFreeItems(), "Free items: \n", "Please choose an item you want to place \n");
+        ParkingSpot currentParking = (ParkingSpot) setObject(currentPerson.getParkingSpots(), "Your parking spots: \n", "Please choose parking spot where you want to place " + currentItem.title);
 
         try {
             currentPerson.addItem(currentParking, currentItem);
         } catch (NotAvaliableException | TooManyThingsException e) {
             System.out.println(e.getMessage());
-            runMenu();
         }
 
         System.out.println("You successfully added " + currentItem.title + " to the " + currentParking.id);
     }
 
-    private void removeItems() throws NotAvaliableException, TooManyThingsException {
-        ParkingSpot currentParking = (ParkingSpot) setPlace(currentPerson.getParkingSpots(), "Your parking spots: \n", "Please choose Parking Spot that you want to remove item from: \n");
-        Item currentItem = setItem(estate.getFreeItems(), "Items in " + currentParking.id + ":\n", "Please choose an item you want to remove \n");
+    private void removeItems() throws NotAvaliableException, TooManyThingsException, InterruptedException {
+        ParkingSpot currentParking = (ParkingSpot) setObject(currentPerson.getParkingSpots(), "Your parking spots: \n", "Please choose Parking Spot that you want to remove item from: \n");
+        Item currentItem = setObject(estate.getFreeItems(), "Items in " + currentParking.id + ":\n", "Please choose an item you want to remove \n");
 
         try {
             currentPerson.removeItem(currentParking, currentItem);
+            System.out.println("You successfully removed " + currentItem.title + " from " + currentParking.id);
         } catch (NotAvaliableException e) {
             System.out.println(e.getMessage());
-            runMenu();
         }
-
-        System.out.println("You successfully removed " + currentItem.title + " from " + currentParking.id);
     }
 
     // Setters
-    private Item setItem(List<Item> items, String header, String footer) throws NotAvaliableException, TooManyThingsException {
-        StringBuilder menu = new StringBuilder(header);
-        if (items.isEmpty()) {
-            System.out.println("No items to display...");
-            runMenu();
-        } else {
-            for (int i = 1; i <= items.size(); i++) {
-                menu.append(i).append(". ").append(items.get(i - 1).toString());
-            }
-            menu.append(footer);
-        }
-        int id = getMenuChoice(menu.toString(), items.size());
-        return items.get(id);
-    }
 
-    private Place setPlace(List<Place> places, String header, String footer) throws NotAvaliableException, TooManyThingsException {
+    private <T> T setObject(List<T> objects, String header, String footer) throws NotAvaliableException, TooManyThingsException, InterruptedException {
         StringBuilder menu = new StringBuilder(header);
-        if (places.isEmpty()){
-            System.out.println("No places to display...");
+        if (objects.isEmpty()) {
+            System.out.println("No objects to display...");
             runMenu();
         } else {
-            for (int i = 1; i <= places.size(); i++) {
-                menu.append(i).append(". ").append(places.get(i - 1).toString());
+            for (int i = 1; i <= objects.size(); i++) {
+                menu.append(i).append(". ").append(objects.get(i - 1).toString());
             }
             menu.append(footer);
         }
-        int id = getMenuChoice(menu.toString(), places.size());
-        return places.get(id);
+        int id = getMenuChoice(menu.toString(), objects.size());
+        return objects.get(id);
     }
 }

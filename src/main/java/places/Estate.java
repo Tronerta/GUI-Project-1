@@ -12,12 +12,15 @@ import java.util.List;
 public class Estate {
     public List<Apartment> apartments;
     public List<ParkingSpot> parkings;
+    public List<Place> places;
     public List<Item> items;
     public List<Person> people;
 
     public Estate(List<Apartment> apartments, List<ParkingSpot> parkings, List<Item> items, List<Person> people) {
         this.apartments = apartments;
         this.parkings = parkings;
+        this.places = new ArrayList<>(apartments);
+        this.places.addAll(parkings);
         this.items = items;
         this.people = people;
     }
@@ -94,7 +97,7 @@ public class Estate {
                 file.write(ps.toString());
                 file.write("---------------------\n");
             }
-
+            
             file.close();
             System.out.println("Success! Report will be avaliable in a few moments in /reports folder.");
         } catch (IOException e) {

@@ -6,7 +6,7 @@ import person.Person;
 import java.time.LocalDate;
 
 public class Place extends Object {
-    Person tenant;
+    public Person tenant;
     public LocalDate startDate;
     public LocalDate endDate;
     public String id;

@@ -10,7 +10,6 @@ import places.Place;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -21,8 +20,8 @@ public class Person {
     public String address;
     public LocalDate birthDate;
 
-    public List<File> files = new ArrayList<>();
-    public List<Place> places = new ArrayList<>();
+    public List<File> letters;
+    public List<Place> places;
     private static int index = 0;
     public String id;
 
@@ -32,6 +31,8 @@ public class Person {
         this.PESEL = PESEL;
         this.address = address;
         this.birthDate = birthDate;
+        this.letters = new ArrayList<>();
+        this.places = new ArrayList<>();
         this.id = "P-" + ++index;
     }
 
@@ -42,7 +43,7 @@ public class Person {
         result.append(" - PESEL: ").append(PESEL).append("\n");
         result.append(" - Address: ").append(address).append("\n");
         result.append(" - Birth date: ").append(birthDate).append("\n");
-        result.append(" - Number of Files: ").append(files.size()).append("\n \n");
+        result.append(" - Number of Files: ").append(letters.size()).append("\n \n");
         if (!places.isEmpty()) {
             result.append("Rented Places: \n");
             for (Place p : places) {
@@ -57,7 +58,10 @@ public class Person {
     }
 
     // Rent a place
-    public void rent(Place p) throws NotAvaliableException, TooManyThingsException {
+    public void rent(Place p) throws NotAvaliableException, TooManyThingsException, ProblematicTenantException {
+        if (letters.size() >= 3){
+            throw new ProblematicTenantException(getProblematicTenantMessage());
+        }
         if ((p instanceof ParkingSpot) && !this.hasApartment()) {
             throw new NotAvaliableException("Rent an apartment first!");
         } else {
@@ -102,7 +106,6 @@ public class Person {
         }
     }
 
-
     private boolean rentingSpaceAvaliable() {
         return this.places.size() < 5;
     }
@@ -122,5 +125,19 @@ public class Person {
                 parkings.add(p);
         }
         return parkings;
+    }
+
+    public String getProblematicTenantMessage(){
+        List<String> places = new ArrayList<>();
+        StringBuilder list = new StringBuilder();
+        for (File file : letters) {
+            String[] arr = file.getName().split("_");
+            if (arr[0].equals(id)){
+                String[] arr2 = arr[1].split("-");
+                list.append(arr2[0].equals("A") ? "Apartment " : "Parkings Spot ");
+                list.append(arr2[1].split(".")[0]).append(", ");
+            }
+        }
+        return "Osoba " + this.toSmallString() + " posiadała już najem pomieszczeń: " + list.toString();
     }
 }
