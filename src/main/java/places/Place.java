@@ -32,11 +32,18 @@ public class Place extends Object {
                 " - Type: " + (this instanceof Apartment ? "Apartment" : "Parking Spot") + "\n" +
                 " - Volume: " + volume + "\n";
         if (tenant != null) {
-            result += " - Tenant: " + tenant.toSmallString() + "\n" +
+            result += " - Tenant: " + tenant.toString() + "\n" +
                     " - Rent start date: " + startDate + "\n" +
                     " - Rent end date: " + endDate + "\n";
         }
         return result;
+    }
+
+    public void clean(){
+        tenant.places.remove(this);
+        tenant = null;
+        startDate = null;
+        endDate = null;
     }
 
 }

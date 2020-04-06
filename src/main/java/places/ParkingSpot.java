@@ -1,12 +1,14 @@
 package places;
 
 import objects.Item;
+import objects.Vehicle;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ParkingSpot extends Place {
     private static int index = 0;
-    public List<Item> items = new ArrayList<Item>();
+    public List<Item> items = new ArrayList<>();
 
     public ParkingSpot(double volume) {
         super(volume);
@@ -30,5 +32,27 @@ public class ParkingSpot extends Place {
             }
         }
         return result.toString();
+    }
+
+    public void clean(){
+        Vehicle vehicle = (Vehicle) getVehicle();
+        if (vehicle == null){
+            super.clean();
+            for (Item item : items)
+                item.placed = false;
+            items.clear();
+        } else {
+            vehicle.placed = false;
+            items.remove(vehicle);
+            super.endDate = super.endDate.plusDays(60);
+        }
+    }
+
+    private Item getVehicle(){
+        for (Item item : items){
+            if (item instanceof Vehicle)
+                return item;
+        }
+        return null;
     }
 }

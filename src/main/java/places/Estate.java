@@ -67,7 +67,7 @@ public class Estate {
                     ParkingSpot ps = (ParkingSpot) parking;
                     ps.items.sort((lhs, rhs) -> Double.compare(rhs.volume, lhs.volume));
                 }
-                file.write(p.toString());
+                file.write(p.toInfoString());
                 file.write("---------------------\n");
             }
 
@@ -99,7 +99,7 @@ public class Estate {
             }
             
             file.close();
-            System.out.println("Success! Report will be avaliable in a few moments in /reports folder.");
+            System.out.println("Success! Report will be avaliable in /reports folder.");
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();

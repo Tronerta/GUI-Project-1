@@ -45,7 +45,7 @@ public class Main {
         Item box = new Item(5.29, "Box");
         Item ball = new Item(1, 2.1, 3.2, "Ball");
         Boat boat1 = new Boat(25.13, "Galaxy", 180.32, "FastEngine V3.0", "Large Boat", 0);
-        Motorcycle bike1 = new Motorcycle(32.11, "Golf 3", 89.50, "Turbo Diesel V2", "Hachback", 9.3);
+        Motorcycle bike1 = new Motorcycle(21.11, "Golf 3", 89.50, "Turbo Diesel V2", "Hatchback", 9.3);
 
         items.add(box);
         items.add(ball);
@@ -61,7 +61,7 @@ public class Main {
         new Runner(estate);
     }
 
-    // Delete all files from folder
+    // Delete all files in folder
     private static void deleteAllFiles(String path){
         File directory = new File(path);
         File[] files = directory.listFiles();

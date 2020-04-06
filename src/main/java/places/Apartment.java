@@ -19,9 +19,14 @@ public class Apartment extends Place {
         if (!habitants.isEmpty()){
             result.append("Habitants: ");
             for (Person p : habitants){
-                result.append("  ").append(p.toSmallString()).append("\n");
+                result.append("  ").append(p.toString()).append("\n");
             }
         }
         return result.toString();
+    }
+
+    public void clean(){
+        super.clean();
+        habitants.clear();
     }
 }

@@ -36,9 +36,8 @@ public class Person {
         this.id = "P-" + ++index;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder result = new StringBuilder("Information about " + this.toSmallString() + ": \n");
+    public String toInfoString() {
+        StringBuilder result = new StringBuilder("Information about " + this.toString() + ": \n");
         result.append(" - ID: ").append(id).append("\n");
         result.append(" - PESEL: ").append(PESEL).append("\n");
         result.append(" - Address: ").append(address).append("\n");
@@ -53,8 +52,8 @@ public class Person {
         return result.toString();
     }
 
-    public String toSmallString() {
-        return "[" + id + "] " + name + " " + surname;
+    public String toString() {
+        return "[" + id + "] " + name + " " + surname + "\n";
     }
 
     // Rent a place
@@ -138,6 +137,27 @@ public class Person {
                 list.append(arr2[1].split(".")[0]).append(", ");
             }
         }
-        return "Osoba " + this.toSmallString() + " posiadała już najem pomieszczeń: " + list.toString();
+        return "Osoba " + this.toString() + " posiadała już najem pomieszczeń: " + list.toString();
+    }
+
+    public boolean hasLetterForPlace(Place place){
+        for (File letter : letters){
+            if (letter.getName().split("_")[1].split(".")[0] == place.id){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Get persons letter for place
+    public File getLetterForPlace(Place place){
+        if (letters.isEmpty())
+            return null;
+        for (File letter : letters){
+            if (letter.getName().split("_")[1].split("\\.")[0].equals(place.id)){
+                return letter;
+            }
+        }
+        return null;
     }
 }
