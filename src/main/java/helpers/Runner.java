@@ -5,12 +5,14 @@ import exceptions.ProblematicTenantException;
 import exceptions.TooManyThingsException;
 import objects.Item;
 import person.Person;
+import places.Apartment;
 import places.Estate;
 import places.ParkingSpot;
 import places.Place;
 import tasks.CheckStatusTask;
 import tasks.DateTask;
 
+import java.io.File;
 import java.util.*;
 
 public class Runner {
@@ -60,6 +62,7 @@ public class Runner {
                 rentNewPlace();
                 break;
             case 2:
+                managePlaces();
                 break;
             case 3:
                 manageItems();
@@ -75,25 +78,92 @@ public class Runner {
         }
     }
 
-    private int getMenuChoice(String menu, int listSize) throws NotAvaliableException, InterruptedException, TooManyThingsException {
-        int id = 0;
-        do {
-            System.out.println("\n" + menu);
-            try {
-                Scanner in = new Scanner(System.in);
-                id = in.nextInt();
-            } catch (InputMismatchException e) {
-                getMenuChoice(menu, listSize);
-            }
-        } while (id < 0 || id > listSize);
-        if (id == 0){
-            runMenu();
+    private void managePlaces() throws NotAvaliableException, InterruptedException, TooManyThingsException {
+        String menu = "What do you want to do? (Type 0 to return to previous menu) \n" +
+                "1. Check-in person to your apartment \n" +
+                "2. Check-out person from your apartment \n" +
+                "3. Renew place rent \n" +
+                "4. Stop renting the place \n";
+        switch (getMenuChoice(menu, 4) + 1) {
+            case 1:
+                checkIn();
+                break;
+            case 2:
+                checkOut();
+                break;
+            case 3:
+                renewRent();
+                break;
+            case 4:
+                endRent();
+                break;
         }
-        return id - 1;
+    }
+
+    private void checkIn() throws NotAvaliableException, InterruptedException, TooManyThingsException {
+        List<Person> peopleWithoutCurrent = estate.people;
+        peopleWithoutCurrent.remove(currentPerson);
+        Apartment currentApartment = setObject(currentPerson.getApartments(), "Your Apartments: \n", "Choose an apartment where you want to check-in some person (Type 0 to return)\n");
+        peopleWithoutCurrent.removeAll(currentApartment.habitants);
+        Person personGuest = setObject(peopleWithoutCurrent, "People: \n", "Choose a person you want to check-in in " + currentApartment.id + ":\n");
+
+        try {
+            currentPerson.addPerson(currentApartment, personGuest);
+        } catch (NotAvaliableException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    private void checkOut() throws NotAvaliableException, InterruptedException, TooManyThingsException {
+        if (currentPerson.getApartments().isEmpty()) {
+            System.out.println("You have no apartments");
+            managePlaces();
+        } else if (currentPerson.hasGuestsInApartment()) {
+            Apartment currentApartment = setObject(currentPerson.getApartments(), "Your Apartments: \n", "Choose an apartment where you want to check-out person (Type 0 to return)\n");
+            Person personGuest = setObject(currentApartment.habitants, "Your habitants: \n", "Choose a person you want to check out from " + currentApartment.id + ":\n");
+            try {
+                currentPerson.removePerson(currentApartment, personGuest);
+            } catch (NotAvaliableException e) {
+                System.out.println(e.getMessage());
+            }
+        } else {
+            System.out.println("You have no people living in your apartments");
+            managePlaces();
+        }
+
+    }
+
+    private void renewRent() throws NotAvaliableException, InterruptedException, TooManyThingsException {
+        if (currentPerson.getExpiredPlaces().isEmpty()){
+            System.out.println("You have no expired places");
+            managePlaces();
+        } else {
+            Place placeToRenew = setObject(currentPerson.getExpiredPlaces(), "Your expired places: \n", "Choose which place you want to renew retning: (Type 0 to return)\n");
+            try {
+                currentPerson.rent(placeToRenew);
+                currentPerson.removeLetterForPlace(placeToRenew);
+                System.out.println("Congratulations! You successfully renewed a rent for " + placeToRenew.id + "\n");
+            } catch (NotAvaliableException | TooManyThingsException | ProblematicTenantException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private void endRent() throws NotAvaliableException, InterruptedException, TooManyThingsException {
+        if (currentPerson.places.isEmpty()){
+            System.out.println("You have no places");
+            managePlaces();
+        } else {
+            Place placeToEnd = setObject(currentPerson.places, "Your places: \n", "Choose which place you want to end renting: (Type 0 to return)\n");
+            placeToEnd.clean();
+            currentPerson.removeLetterForPlace(placeToEnd);
+            System.out.println("You ended renting " + placeToEnd.id + "\n");
+        }
     }
 
     private void rentNewPlace() throws NotAvaliableException, TooManyThingsException, InterruptedException {
-        Place currentPlace = setObject(estate.getFreePlaces(), "Free places: \n", "Choose which place you want to rent: (Type 0 to return to previous menu)\n");
+        Place currentPlace = setObject(estate.getFreePlaces(), "Free places: \n", "Choose which place you want to rent: (Type 0 to return)\n");
         try {
             currentPerson.rent(currentPlace);
             System.out.println("Congratulations! You successfully rented new place! ");
@@ -102,6 +172,7 @@ public class Runner {
         }
     }
 
+    // Items managing
     private void manageItems() throws NotAvaliableException, InterruptedException, TooManyThingsException {
         String menu = "What do you want to do? (Type 0 to return) \n 1. Add items to Parkings Spot \n 2. Remove items from Parking Spot \n";
         int id = getMenuChoice(menu, 2);
@@ -113,8 +184,8 @@ public class Runner {
     }
 
     private void placeItems() throws NotAvaliableException, TooManyThingsException, InterruptedException {
+        ParkingSpot currentParking = (ParkingSpot) setObject(currentPerson.getParkingSpots(), "Your parking spots: \n", "Please choose parking spot where you want to place an item");
         Item currentItem = setObject(estate.getFreeItems(), "Free items: \n", "Please choose an item you want to place: (Type 0 to return to previous menu) \n");
-        ParkingSpot currentParking = (ParkingSpot) setObject(currentPerson.getParkingSpots(), "Your parking spots: \n", "Please choose parking spot where you want to place " + currentItem.title);
 
         try {
             currentPerson.addItem(currentParking, currentItem);
@@ -137,7 +208,7 @@ public class Runner {
         }
     }
 
-    // Setters
+    // Setters & getters
     private <T> T setObject(List<T> objects, String header, String footer) throws NotAvaliableException, TooManyThingsException, InterruptedException {
         StringBuilder menu = new StringBuilder(header);
         if (objects.isEmpty()) {
@@ -151,5 +222,22 @@ public class Runner {
         }
         int id = getMenuChoice(menu.toString(), objects.size());
         return objects.get(id);
+    }
+
+    private int getMenuChoice(String menu, int listSize) throws NotAvaliableException, InterruptedException, TooManyThingsException {
+        int id = 0;
+        do {
+            System.out.println("\n" + menu);
+            try {
+                Scanner in = new Scanner(System.in);
+                id = in.nextInt();
+            } catch (InputMismatchException e) {
+                getMenuChoice(menu, listSize);
+            }
+        } while (id < 0 || id > listSize);
+        if (id == 0) {
+            runMenu();
+        }
+        return id - 1;
     }
 }

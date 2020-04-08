@@ -30,9 +30,9 @@ public class Main {
             String[] surnames = {"Skrzekut", "Riddle", "Tomaszewski", "Jasinski", "Nowak"};
             String[] PESELs = {"12345678901", "09876543212", "2345678901", "98765432101", "34567890123"};
 
-            apartments.add(new Apartment(Math.random() * (200 - 10 + 1) + 10));
+            apartments.add(new Apartment(Math.random() * (200 - 80 + 1) + 80));
             people.add(new Person(names[i], surnames[i], PESELs[i], "Warszawa, ul. Nowaka 3/9", DateHelper.randomDate()));
-            parkings.add(new ParkingSpot(Math.random() * (300 - 10 + 1) + 10));
+            parkings.add(new ParkingSpot(Math.random() * (300 - 80 + 1) + 80));
         }
 
         for (int i = 0; i < 3; i++) {

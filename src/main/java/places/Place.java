@@ -9,10 +9,12 @@ public class Place extends Object {
     public Person tenant;
     public LocalDate startDate;
     public LocalDate endDate;
+    public boolean expired;
     public String id;
 
     public Place(double volume) {
         super(volume);
+        this.expired = false;
     }
 
     public Place(double a, double b, double c) {
@@ -32,7 +34,7 @@ public class Place extends Object {
                 " - Type: " + (this instanceof Apartment ? "Apartment" : "Parking Spot") + "\n" +
                 " - Volume: " + volume + "\n";
         if (tenant != null) {
-            result += " - Tenant: " + tenant.toString() + "\n" +
+            result += " - Tenant: " + tenant.toString() +
                     " - Rent start date: " + startDate + "\n" +
                     " - Rent end date: " + endDate + "\n";
         }
@@ -40,10 +42,11 @@ public class Place extends Object {
     }
 
     public void clean(){
-        tenant.places.remove(this);
-        tenant = null;
-        startDate = null;
-        endDate = null;
+        this.tenant.places.remove(this);
+        this.tenant = null;
+        this.startDate = null;
+        this.endDate = null;
+        this.expired = false;
     }
 
 }

@@ -27,7 +27,8 @@ public class CheckStatusTask extends TimerTask {
                             File file = new File("letters/" + p.tenant.id + "_" + p.id + ".txt");
                             Files.write(file.toPath(), Collections.singleton("Your rent for " + p.id + " is ended!"));
                             p.tenant.letters.add(file);
-                            System.out.println("Letter for " + p.tenant.id + " was added!");
+                            p.expired = true;
+                            // System.out.println("Letter for " + p.tenant.id + " was added!");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

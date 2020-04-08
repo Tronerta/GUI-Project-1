@@ -37,7 +37,7 @@ public class Person {
     }
 
     public String toInfoString() {
-        StringBuilder result = new StringBuilder("Information about " + this.toString() + ": \n");
+        StringBuilder result = new StringBuilder("Information about " + this.toString() + "\n");
         result.append(" - ID: ").append(id).append("\n");
         result.append(" - PESEL: ").append(PESEL).append("\n");
         result.append(" - Address: ").append(address).append("\n");
@@ -61,7 +61,7 @@ public class Person {
         if (letters.size() >= 3){
             throw new ProblematicTenantException(getProblematicTenantMessage());
         }
-        if ((p instanceof ParkingSpot) && !this.hasApartment()) {
+        if ((p instanceof ParkingSpot) && this.getApartments().isEmpty()) {
             throw new NotAvaliableException("Rent an apartment first!");
         } else {
             if (this.rentingSpaceAvaliable()) {
@@ -75,10 +75,20 @@ public class Person {
         }
     }
 
-    // Add Person to the apartment
+    // Manage people in apartments
     public void addPerson(Apartment m, Person o) throws NotAvaliableException {
         if (this.places.contains(m)) {
             m.habitants.add(o);
+            System.out.println("You checked in " + o.name + " " + o.surname + " to " + m.id + "\n");
+        } else {
+            throw new NotAvaliableException("You have no access to that apartment!");
+        }
+    }
+
+    public void removePerson(Apartment m, Person o) throws NotAvaliableException {
+        if (this.places.contains(m)) {
+            m.habitants.remove(o);
+            System.out.println("You checked out " + o.name + " " + o.surname + " from " + m.id + "\n");
         } else {
             throw new NotAvaliableException("You have no access to that apartment!");
         }
@@ -109,13 +119,24 @@ public class Person {
         return this.places.size() < 5;
     }
 
-    private boolean hasApartment() {
-        for (Place p : this.places) {
+    public List<Apartment> getApartments(){
+        List<Apartment> apartments = new ArrayList<>();
+        for (Place p : places) {
             if (p instanceof Apartment)
-                return true;
+                apartments.add((Apartment) p);
         }
-        return false;
+        return apartments;
     }
+
+    public List<Place> getExpiredPlaces(){
+        List<Place> expiredPlaces = new ArrayList<>();
+        for (Place p : places){
+            if (p.expired)
+                expiredPlaces.add(p);
+        }
+        return expiredPlaces;
+    }
+
 
     public List<Place> getParkingSpots(){
         List<Place> parkings = new ArrayList<>();
@@ -124,6 +145,15 @@ public class Person {
                 parkings.add(p);
         }
         return parkings;
+    }
+
+    public boolean hasGuestsInApartment(){
+        for (Apartment apartment : this.getApartments()){
+            if (!apartment.habitants.isEmpty()){
+                return true;
+            }
+        }
+        return false;
     }
 
     public String getProblematicTenantMessage(){
@@ -140,16 +170,7 @@ public class Person {
         return "Osoba " + this.toString() + " posiadała już najem pomieszczeń: " + list.toString();
     }
 
-    public boolean hasLetterForPlace(Place place){
-        for (File letter : letters){
-            if (letter.getName().split("_")[1].split(".")[0] == place.id){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // Get persons letter for place
+    // Managing letters
     public File getLetterForPlace(Place place){
         if (letters.isEmpty())
             return null;
@@ -159,5 +180,13 @@ public class Person {
             }
         }
         return null;
+    }
+
+    public void removeLetterForPlace(Place place){
+        File letter = this.getLetterForPlace(place);
+        if (letter != null){
+            this.letters.remove(letter);
+            letter.delete();
+        }
     }
 }
