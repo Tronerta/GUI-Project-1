@@ -4,6 +4,7 @@ import helpers.DateHelper;
 import objects.Item;
 import person.Person;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,6 +58,7 @@ public class Estate {
 
     public void saveReport() {
         try {
+            new File("letters").mkdir();
             FileWriter file = new FileWriter("reports/report_" + DateHelper.todayDate.toString() + ".txt");
             file.write("ESTATE REPORT \n");
             file.write("People: \n");

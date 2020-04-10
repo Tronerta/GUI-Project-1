@@ -9,10 +9,13 @@ import places.Apartment;
 import places.Estate;
 import places.ParkingSpot;
 import objects.vehicles.*;
+import tasks.CheckStatusTask;
+import tasks.DateTask;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 
 public class Main {
@@ -26,8 +29,8 @@ public class Main {
         List<Item> items = new ArrayList<>();
 
         for (int i = 0; i < 5; i++) {
-            String[] names = {"John", "Tomasz", "Jacek", "Adrian", "Anna"};
-            String[] surnames = {"Skrzekut", "Riddle", "Tomaszewski", "Jasinski", "Nowak"};
+            String[] names = {"John", "Tom", "Jack", "Peter", "Anna"};
+            String[] surnames = {"Skrzekut", "Danczak", "Tomaszewski", "Werner", "Nowak"};
             String[] PESELs = {"12345678901", "09876543212", "2345678901", "98765432101", "34567890123"};
 
             apartments.add(new Apartment(Math.random() * (200 - 80 + 1) + 80));
@@ -56,8 +59,12 @@ public class Main {
         people.get(1).addItem(parkings.get(1), boat1);
 
         Estate estate = new Estate(apartments, parkings, items, people);
+
+        // Run
         deleteAllFiles("letters");
         deleteAllFiles("reports");
+        new Timer().schedule(new DateTask(), 0, 5000);
+        new Timer().schedule(new CheckStatusTask(estate), 0, 10000);
         new Runner(estate);
     }
 

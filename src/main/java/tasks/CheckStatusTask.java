@@ -24,11 +24,12 @@ public class CheckStatusTask extends TimerTask {
                 if (p.tenant.getLetterForPlace(p) == null) {
                     if (DateHelper.todayDate.isAfter(p.endDate)) {
                         try {
+                            new File("letters").mkdir();
                             File file = new File("letters/" + p.tenant.id + "_" + p.id + ".txt");
                             Files.write(file.toPath(), Collections.singleton("Your rent for " + p.id + " is ended!"));
                             p.tenant.letters.add(file);
                             p.expired = true;
-                            // System.out.println("Letter for " + p.tenant.id + " was added!");
+                            System.out.println("Letter for " + p.tenant.id + " was added!");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
