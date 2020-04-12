@@ -1,5 +1,6 @@
 package places;
 
+import helpers.DateHelper;
 import objects.Item;
 import objects.Vehicle;
 
@@ -26,9 +27,10 @@ public class ParkingSpot extends Place {
     public String toString(){
         StringBuilder result = new StringBuilder(super.toString());
         if (!items.isEmpty()){
+            result.append(" - Free Volume: ").append(this.getFreeVolume()).append("\n");
             result.append(" * Placed items in ").append(id).append(":\n");
             for (Item i : this.items){
-                result.append(i.toString()).append("\n");
+                result.append("  *").append(i.toString()).append("\n");
             }
         }
         return result.toString();
@@ -44,7 +46,8 @@ public class ParkingSpot extends Place {
         } else {
             vehicle.placed = false;
             items.remove(vehicle);
-            super.endDate = super.endDate.plusDays(60);
+            super.endDate = DateHelper.todayDate.plusDays(60);
+            System.out.println("We sold your vehicle and renewed your rent for " + this.id + " for another 60 days");
         }
     }
 

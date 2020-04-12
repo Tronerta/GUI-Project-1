@@ -6,7 +6,7 @@ import java.math.RoundingMode;
 public class Object {
     public double volume;
 
-    public Object (double volume) {
+    public Object(double volume) {
         this.volume = round(volume, 2);
     }
 

@@ -19,7 +19,7 @@ public class Item extends Object {
     }
 
     public String toString(){
-        return " ID: " + id + "\n" +
+        return " Item ID: " + id + "\n" +
                 "  - Placed: " + (placed ? "Yes" : "No") + "\n" +
                 "  - Title: " + title + "\n" +
                 "  - Volume: " + volume + "\n";

@@ -42,11 +42,11 @@ public class Person {
         result.append(" - PESEL: ").append(PESEL).append("\n");
         result.append(" - Address: ").append(address).append("\n");
         result.append(" - Birth date: ").append(birthDate).append("\n");
-        result.append(" - Number of Files: ").append(letters.size()).append("\n \n");
+        result.append(" - Number of Letters: ").append(letters.size()).append("\n \n");
         if (!places.isEmpty()) {
             result.append("Rented Places: \n");
             for (Place p : places) {
-                result.append(p.toString()).append("\n");
+                result.append(" * ").append(p.toString()).append("\n");
             }
         }
         return result.toString();
@@ -58,7 +58,7 @@ public class Person {
 
     // Rent a place
     public void rent(Place p) throws NotAvaliableException, TooManyThingsException, ProblematicTenantException {
-        if (letters.size() >= 3){
+        if (letters.size() >= 3) {
             throw new ProblematicTenantException(getProblematicTenantMessage());
         }
         if ((p instanceof ParkingSpot) && this.getApartments().isEmpty()) {
@@ -94,7 +94,7 @@ public class Person {
         }
     }
 
-    // Add item to the parking spot
+    // Manage items
     public void addItem(ParkingSpot parking, Item p) throws NotAvaliableException, TooManyThingsException {
         if (p.placed) {
             throw new NotAvaliableException("This item is already in another place!");
@@ -119,7 +119,8 @@ public class Person {
         return this.places.size() < 5;
     }
 
-    public List<Apartment> getApartments(){
+    // Getters
+    public List<Apartment> getApartments() {
         List<Apartment> apartments = new ArrayList<>();
         for (Place p : places) {
             if (p instanceof Apartment)
@@ -128,9 +129,9 @@ public class Person {
         return apartments;
     }
 
-    public List<Place> getExpiredPlaces(){
+    public List<Place> getExpiredPlaces() {
         List<Place> expiredPlaces = new ArrayList<>();
-        for (Place p : places){
+        for (Place p : places) {
             if (p.expired)
                 expiredPlaces.add(p);
         }
@@ -138,7 +139,7 @@ public class Person {
     }
 
 
-    public List<Place> getParkingSpots(){
+    public List<Place> getParkingSpots() {
         List<Place> parkings = new ArrayList<>();
         for (Place p : places) {
             if (p instanceof ParkingSpot)
@@ -147,23 +148,22 @@ public class Person {
         return parkings;
     }
 
-    public boolean hasGuestsInApartment(){
-        for (Apartment apartment : this.getApartments()){
-            if (!apartment.habitants.isEmpty()){
+    public boolean hasGuestsInApartment() {
+        for (Apartment apartment : this.getApartments()) {
+            if (!apartment.habitants.isEmpty()) {
                 return true;
             }
         }
         return false;
     }
 
-    public String getProblematicTenantMessage(){
-        List<String> places = new ArrayList<>();
+    public String getProblematicTenantMessage() {
         StringBuilder list = new StringBuilder();
         for (File file : letters) {
             String[] arr = file.getName().split("_");
-            if (arr[0].equals(id)){
+            if (arr[0].equals(id)) {
                 String[] arr2 = arr[1].split("-");
-                list.append(arr2[0].equals("A") ? "Apartment " : "Parkings Spot ");
+                list.append(arr2[0].equals("A") ? "Apartment " : "Parking Spot ");
                 list.append(arr2[1].split(".")[0]).append(", ");
             }
         }
@@ -171,20 +171,20 @@ public class Person {
     }
 
     // Managing letters
-    public File getLetterForPlace(Place place){
+    public File getLetterForPlace(Place place) {
         if (letters.isEmpty())
             return null;
-        for (File letter : letters){
-            if (letter.getName().split("_")[1].split("\\.")[0].equals(place.id)){
+        for (File letter : letters) {
+            if (letter.getName().split("_")[1].split("\\.")[0].equals(place.id)) {
                 return letter;
             }
         }
         return null;
     }
 
-    public void removeLetterForPlace(Place place){
+    public void removeLetterForPlace(Place place) {
         File letter = this.getLetterForPlace(place);
-        if (letter != null){
+        if (letter != null) {
             this.letters.remove(letter);
             letter.delete();
         }

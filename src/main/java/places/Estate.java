@@ -58,7 +58,7 @@ public class Estate {
 
     public void saveReport() {
         try {
-            new File("letters").mkdir();
+            new File("reports").mkdir();
             FileWriter file = new FileWriter("reports/report_" + DateHelper.todayDate.toString() + ".txt");
             file.write("ESTATE REPORT \n");
             file.write("People: \n");
@@ -72,6 +72,7 @@ public class Estate {
                 file.write(p.toInfoString());
                 file.write("---------------------\n");
             }
+            file.write("\n");
 
             file.write("Free Apartments: \n");
             file.write("---------------------\n");
@@ -82,6 +83,7 @@ public class Estate {
                 file.write("---------------------\n");
             }
 
+            file.write("\n");
             file.write("Free Parking Spots: \n");
             file.write("---------------------\n");
             List<ParkingSpot> freeParkingSpots = getFreeParkingSpots();
@@ -91,6 +93,7 @@ public class Estate {
                 file.write("---------------------\n");
             }
 
+            file.write("\n");
             file.write("Free Items: \n");
             file.write("---------------------\n");
             List<Item> freeItems = getFreeItems();

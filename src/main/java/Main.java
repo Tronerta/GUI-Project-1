@@ -29,8 +29,8 @@ public class Main {
         List<Item> items = new ArrayList<>();
 
         for (int i = 0; i < 5; i++) {
-            String[] names = {"John", "Tom", "Jack", "Peter", "Anna"};
-            String[] surnames = {"Skrzekut", "Danczak", "Tomaszewski", "Werner", "Nowak"};
+            String[] names = {"Slawomir", "Michal", "Michal", "Peter", "Anna"};
+            String[] surnames = {"Danczak", "Skrzekut", "Tomaszewski", "Werner", "Nowak"};
             String[] PESELs = {"12345678901", "09876543212", "2345678901", "98765432101", "34567890123"};
 
             apartments.add(new Apartment(Math.random() * (200 - 80 + 1) + 80));
@@ -49,11 +49,15 @@ public class Main {
         Item ball = new Item(1, 2.1, 3.2, "Ball");
         Boat boat1 = new Boat(25.13, "Galaxy", 180.32, "FastEngine V3.0", "Large Boat", 0);
         Motorcycle bike1 = new Motorcycle(21.11, "Golf 3", 89.50, "Turbo Diesel V2", "Hatchback", 9.3);
+        CityCar car1 = new CityCar(75.23, "Toyota SV", 123.5, "VVV Extreme", "Sedan", 9.3);
+        Amphibian amphibian1 = new Amphibian(126.13, "Amphibian 1", 87.23, "Land-Water x3", "Amphibia", 34.5);
 
         items.add(box);
         items.add(ball);
         items.add(boat1);
         items.add(bike1);
+        items.add(car1);
+        items.add(amphibian1);
 
         people.get(0).addItem(parkings.get(0), box);
         people.get(1).addItem(parkings.get(1), boat1);

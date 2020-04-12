@@ -1,0 +1,161 @@
+ESTATE REPORT 
+People: 
+---------------------
+Information about [P-1] Slawomir Danczak
+
+ - ID: P-1
+ - PESEL: 12345678901
+ - Address: Warszawa, ul. Nowaka 3/9
+ - Birth date: 2020-03-16
+ - Number of Letters: 0
+ 
+Rented Places: 
+ * Place ID: PS-1
+ - Type: Parking Spot
+ - Volume: 256.69
+ - Tenant: [P-1] Slawomir Danczak
+ - Rent start date: 2020-03-29
+ - Rent end date: 2020-04-28
+ - Free Volume: 251.4
+ * Placed items in PS-1:
+  * Item ID: I-1
+  - Placed: Yes
+  - Title: Box
+  - Volume: 5.29
+
+
+ * Place ID: A-1
+ - Type: Apartment
+ - Volume: 111.83
+ - Tenant: [P-1] Slawomir Danczak
+ - Rent start date: 2020-03-26
+ - Rent end date: 2020-04-25
+
+---------------------
+Information about [P-2] Michal Skrzekut
+
+ - ID: P-2
+ - PESEL: 09876543212
+ - Address: Warszawa, ul. Nowaka 3/9
+ - Birth date: 2020-03-13
+ - Number of Letters: 0
+ 
+Rented Places: 
+ * Place ID: A-2
+ - Type: Apartment
+ - Volume: 160.02
+ - Tenant: [P-2] Michal Skrzekut
+ - Rent start date: 2020-04-01
+ - Rent end date: 2020-05-01
+
+ * Place ID: PS-2
+ - Type: Parking Spot
+ - Volume: 86.41
+ - Tenant: [P-2] Michal Skrzekut
+ - Rent start date: 2020-03-08
+ - Rent end date: 2020-04-07
+ - Free Volume: 61.28
+ * Placed items in PS-2:
+  * Item ID: V-1
+  - Placed: Yes
+  - Title: Galaxy
+  - Volume: 25.13
+  - Vehicle type: Large Boat
+  - Engine capacity: 180.32
+  - Engine type: FastEngine V3.0
+
+
+---------------------
+Information about [P-3] Michal Tomaszewski
+
+ - ID: P-3
+ - PESEL: 2345678901
+ - Address: Warszawa, ul. Nowaka 3/9
+ - Birth date: 2020-04-05
+ - Number of Letters: 0
+ 
+Rented Places: 
+ * Place ID: A-3
+ - Type: Apartment
+ - Volume: 188.21
+ - Tenant: [P-3] Michal Tomaszewski
+ - Rent start date: 2020-03-02
+ - Rent end date: 2020-04-01
+
+---------------------
+Information about [P-4] Peter Werner
+
+ - ID: P-4
+ - PESEL: 98765432101
+ - Address: Warszawa, ul. Nowaka 3/9
+ - Birth date: 2020-03-29
+ - Number of Letters: 0
+ 
+---------------------
+Information about [P-5] Anna Nowak
+
+ - ID: P-5
+ - PESEL: 34567890123
+ - Address: Warszawa, ul. Nowaka 3/9
+ - Birth date: 2020-03-20
+ - Number of Letters: 0
+ 
+---------------------
+
+Free Apartments: 
+---------------------
+Place ID: A-4
+ - Type: Apartment
+ - Volume: 149.62
+---------------------
+Place ID: A-5
+ - Type: Apartment
+ - Volume: 140.95
+---------------------
+
+Free Parking Spots: 
+---------------------
+Place ID: PS-3
+ - Type: Parking Spot
+ - Volume: 240.35
+---------------------
+Place ID: PS-4
+ - Type: Parking Spot
+ - Volume: 238.94
+---------------------
+Place ID: PS-5
+ - Type: Parking Spot
+ - Volume: 101.1
+---------------------
+
+Free Items: 
+---------------------
+ Item ID: V-4
+  - Placed: No
+  - Title: Amphibian 1
+  - Volume: 126.13
+  - Vehicle type: Amphibia
+  - Engine capacity: 87.23
+  - Engine type: Land-Water x3
+---------------------
+ Item ID: V-3
+  - Placed: No
+  - Title: Toyota SV
+  - Volume: 75.23
+  - Vehicle type: Sedan
+  - Engine capacity: 123.5
+  - Engine type: VVV Extreme
+---------------------
+ Item ID: V-2
+  - Placed: No
+  - Title: Golf 3
+  - Volume: 21.11
+  - Vehicle type: Hatchback
+  - Engine capacity: 89.5
+  - Engine type: Turbo Diesel V2
+---------------------
+ Item ID: I-2
+  - Placed: No
+  - Title: Ball
+  - Volume: 6.72
+---------------------
