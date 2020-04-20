@@ -147,7 +147,7 @@ public class Runner {
 
     // Habitants managing
     private void checkIn() throws NotAvaliableException, InterruptedException, TooManyThingsException {
-        List<Person> peopleWithoutCurrent = new ArrayList<>(List.copyOf(estate.people));
+        List<Person> peopleWithoutCurrent = new ArrayList<>(estate.people);
         peopleWithoutCurrent.remove(currentPerson);
         Apartment currentApartment = setObject(currentPerson.getApartments(), "Your Apartments: \n", "Choose an apartment where you want to check-in some person (Type 0 to return)\n");
         peopleWithoutCurrent.removeAll(currentApartment.habitants);
